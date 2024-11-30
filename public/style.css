@@ -1,0 +1,315 @@
+/* Estilo global */
+html, body {
+  height: 100%; /* El cuerpo ocupa el 100% de la pantalla */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Contenedor principal para mantener el footer abajo */
+main {
+  flex: 1; /* Expande el contenido principal */
+  margin-bottom: 2rem; /* Espacio inferior para separar del footer */
+}
+
+/* Navbar */
+.navbar {
+  padding: 0.5rem 1rem;
+  background-color: #2c3e50; /* Fondo del navbar */
+}
+
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.navbar .nav-link {
+  color: #fff !important; /* Color de los links */
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
+/* Footer fijo */
+footer {
+  background-color: #2c3e50; /* Color del fondo */
+  color: #fff; /* Color del texto */
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem; /* Espaciado superior */
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+  color: #2c3e50; /* Texto oscuro */
+  border: 1px solid transparent; /* Sin borde inicial */
+  border-radius: 8px; /* Bordes redondeados */
+  margin-right: 5px; /* Espaciado entre tabs */
+  padding: 10px 15px; /* Relleno interno */
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #e9ecef; /* Fondo al pasar el cursor */
+  color: #2c3e50; /* Contraste del texto */
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #3498db; /* Fondo del tab activo */
+  color: #fff; /* Texto blanco */
+  border-color: #3498db; /* Borde del tab activo */
+  font-weight: bold; /* Negrita */
+}
+
+/* Contenedor de tabs */
+.tab-content {
+  padding: 20px; /* Espaciado interno */
+  background-color: #fff; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  margin-top: 10px;
+}
+
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px;
+}
+
+.table thead {
+  background-color: #3498db;
+  color: white;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+  background-color: #dfe6e9;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+
+/* Encabezados */
+h2 {
+  font-size: 2rem; /* Tamaño del texto */
+  color: #2c3e50; /* Azul oscuro */
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3498db; /* Línea decorativa */
+  display: inline-block; /* Ajusta la línea decorativa al texto */
+  padding-bottom: 10px; /* Espaciado */
+}
+
+/* Sección general */
+.section {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Fondo claro */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Cards generales */
+.card-container-centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra horizontalmente */
+  gap: 1.5rem; /* Espaciado entre las tarjetas */
+  margin: 0 auto; /* Centrado automático */
+  max-width: 1200px; /* Ancho máximo */
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+  width: 220px; /* Ancho de las tarjetas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+/* Botones dentro de las tarjetas */
+.card .btn {
+  width: 90%; /* Ancho de los botones */
+  margin: 0.5rem auto; /* Separación entre botones */
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.card .btn-green {
+  background-color: #28a745; /* Verde para encender */
+  color: #fff;
+  border: none;
+}
+
+.card .btn-green:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.card .btn-red {
+  background-color: #dc3545; /* Rojo para apagar */
+  color: #fff;
+  border: none;
+}
+
+.card .btn-red:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+/* Contenedor de Garage y Seguridad */
+.garage-security-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.garage-control,
+.security-control {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.garage-control:hover,
+.security-control:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+.garage-control h2,
+.security-control h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.garage-control .btn,
+.security-control .btn {
+  width: 80%;
+  padding: 0.7rem 1.2rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.garage-control .btn-blue {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.garage-control .btn-blue:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.garage-control .btn-gray {
+  background-color: #95a5a6;
+  color: #fff;
+}
+
+.garage-control .btn-gray:hover {
+  background-color: #7f8c8d;
+  transform: scale(1.05);
+}
+
+.security-control .btn-yellow {
+  background-color: #f1c40f;
+  color: #fff;
+}
+
+.security-control .btn-yellow:hover {
+  background-color: #d4ac0d;
+  transform: scale(1.05);
+}
+
+.security-control .btn-dark {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.security-control .btn-dark:hover {
+  background-color: #1a252f;
+  transform: scale(1.05);
+}
+
+/* Video container */
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* Centrar */
+  max-width: 640px; /* Ancho máximo */
+  height: 480px; /* Altura fija */
+  background-color: white; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Asegura que el video no se desborde */
+}
+
+.stream-iframe {
+  width: 100%; /* Ajustar al contenedor */
+  height: 100%;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .card {
+    width: 45%;
+  }
+
+  .garage-control,
+  .security-control {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+  }
+}

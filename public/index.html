@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/11.0.2/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/11.0.2/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/11.0.2/firebase-performance-compat.js"></script>
+    <!-- initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.-->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Casa Domótica</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="#luces">Luces</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#garage-seguridad">Garage</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#garage-seguridad">Seguridad</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>      
+    </header>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Iniciar Sesión</h5>
+          </div>
+          <div class="modal-body">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="emailInput" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="emailInput" required />
+              </div>
+              <div class="mb-3">
+                <label for="passwordInput" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="passwordInput" required />
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Código de Seguridad Modal -->
+    <div class="modal fade" id="securityCodeModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Código de Seguridad</h5>
+          </div>
+          <div class="modal-body">
+            <form id="securityCodeForm">
+              <div class="mb-3">
+                <label for="securityCodeInput" class="form-label">Código</label>
+                <input type="password" class="form-control" id="securityCodeInput" required />
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Verificar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="container mt-4">
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="luces-tab" data-bs-toggle="tab" data-bs-target="#luces" type="button" role="tab" aria-controls="luces" aria-selected="true">Control de Luces</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="garage-seguridad-tab" data-bs-toggle="tab" data-bs-target="#garage-seguridad" type="button" role="tab" aria-controls="garage-seguridad" aria-selected="false">Garage y Seguridad</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="stream-tab" data-bs-toggle="tab" data-bs-target="#stream-camara" type="button" role="tab" aria-controls="stream-camara" aria-selected="false">Cámara de Vigilancia</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial" type="button" role="tab" aria-controls="historial" aria-selected="true">Historial</button>
+          </li>
+        </ul>
+    
+        <!-- Tabs Content -->
+        <div class="tab-content" id="myTabContent">
+          <!-- Control de Luces -->
+          <div class="tab-pane fade show active" id="luces" role="tabpanel" aria-labelledby="luces-tab">
+            <section class="section">
+              <div class="card-container-centered">
+                <!-- Sala -->
+                <div class="card">
+                  <h3>Sala</h3>
+                  <button class="btn btn-green" data-area="sala">Encender</button>
+                  <button class="btn btn-red" data-area="sala">Apagar</button>
+                </div>
+                <!-- Cocina -->
+                <div class="card">
+                  <h3>Cocina</h3>
+                  <button class="btn btn-green" data-area="cocina">Encender</button>
+                  <button class="btn btn-red" data-area="cocina">Apagar</button>
+                </div>
+                <!-- Baño -->
+                <div class="card">
+                  <h3>Bano</h3>
+                  <button class="btn btn-green" data-area="bano">Encender</button>
+                  <button class="btn btn-red" data-area="bano">Apagar</button>
+                </div>
+                <!-- Lavandería -->
+                <div class="card">
+                  <h3>Lavanderia</h3>
+                  <button class="btn btn-green" data-area="lavanderia">Encender</button>
+                  <button class="btn btn-red" data-area="lavanderia">Apagar</button>
+                </div>
+                <!-- Habitación -->
+                <div class="card">
+                  <h3>Habitacion</h3>
+                  <button class="btn btn-green" data-area="habitacion">Encender</button>
+                  <button class="btn btn-red" data-area="habitacion">Apagar</button>
+                </div>
+                <!-- Oficina -->
+                <div class="card">
+                  <h3>Oficina</h3>
+                  <button class="btn btn-green" data-area="oficina">Encender</button>
+                  <button class="btn btn-red" data-area="oficina">Apagar</button>
+                </div>
+                <!-- Garage -->
+                <div class="card">
+                  <h3>Garage</h3>
+                  <button class="btn btn-green" data-area="garage">Encender</button>
+                  <button class="btn btn-red" data-area="garage">Apagar</button>
+                </div>
+              </div>
+            </section>
+          </div>
+    
+          <!-- Garage y Seguridad -->
+          <div class="tab-pane fade" id="garage-seguridad" role="tabpanel" aria-labelledby="garage-seguridad-tab">
+            <section class="section">
+              <div class="garage-security-container">
+                <!-- Control del Garage -->
+                <div class="garage-control">
+                  <h2>Control del Garage</h2>
+                  <button id="btn-abrir" class="btn btn-blue">Abrir</button>
+                  <button id="btn-cerrar" class="btn btn-gray">Cerrar</button>
+                </div>
+                <!-- Seguridad -->
+                <div class="security-control">
+                  <h2>Seguridad</h2>
+                  <button id="btn-activar-seguro" class="btn btn-yellow">Activar Modo Seguro</button>
+                  <button id="btn-desactivar-seguro" class="btn btn-dark">Desactivar</button>
+                </div>
+              </div>
+            </section>
+          </div>
+    
+          <!-- Stream de la Cámara -->
+          <div class="tab-pane fade" id="stream-camara" role="tabpanel" aria-labelledby="stream-tab">
+            <section class="section">
+              <div class="video-container">
+                <iframe
+                  src="https://fe66-200-121-6-232.ngrok-free.app/stream?ngrok-skip-browser-warning=1"
+                  class="stream-iframe"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </section>
+          </div>
+
+          <!-- Historial -->
+          <div class="tab-pane fade" id="historial" role="tabpanel">
+            <h3 class="mt-4">Historial</h3>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Fecha y Hora</th>
+                    <th scope="col">Acción</th>
+                    <th scope="col">Usuario</th>
+                  </tr>
+                </thead>
+                <tbody id="historial-list"></tbody>
+              </table>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </main>
+    
+
+    <footer>
+        <p>© 2024 Casa Domótica. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loadEl = document.querySelector("#load");
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = [
+            "auth",
+            "database",
+            "firestore",
+            "functions",
+            "messaging",
+            "storage",
+            "analytics",
+            "remoteConfig",
+            "performance",
+          ].filter((feature) => typeof app[feature] === "function");
+          loadEl.textContent = `Firebase SDK loaded with ${features.join(
+            ", "
+          )}`;
+        } catch (e) {
+          console.error(e);
+          loadEl.textContent =
+            "Error loading the Firebase SDK, check the console.";
+        }
+      });
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getDatabase, push, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+      import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    
+      const firebaseConfig = {
+        apiKey: "AIzaSyCuU_CazbDWe4-TYozzSSfYcC1lJKaSQyc",
+        authDomain: "casadomotica-c01a8.firebaseapp.com",
+        databaseURL: "https://casadomotica-c01a8-default-rtdb.firebaseio.com",
+        projectId: "casadomotica-c01a8",
+        storageBucket: "casadomotica-c01a8.appspot.com",
+        messagingSenderId: "1029996298991",
+        appId: "1:1029996298991:web:83853734e37d11e2e8511a"
+      };
+    
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+    
+      // Mostrar Login al cargar la página
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+          loginModal.show();
+        }
+      });
+    
+      // Login
+      document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("emailInput").value;
+        const password = document.getElementById("passwordInput").value;
+    
+        signInWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            bootstrap.Modal.getInstance(document.getElementById("loginModal")).hide();
+            alert("Inicio de sesión exitoso");
+          })
+          .catch((err) => alert("Error de inicio de sesión: " + err.message));
+      });
+    
+      // Escuchar estado de la alarma
+      onValue(ref(db, "alarma/alarmaActiva"), (snapshot) => {
+        if (snapshot.exists() && snapshot.val() === "true") {
+          const securityModal = new bootstrap.Modal(document.getElementById("securityCodeModal"));
+          securityModal.show();
+        }
+      });
+    
+      // Código de Seguridad
+      document.getElementById("securityCodeForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const code = parseInt(document.getElementById("securityCodeInput").value, 10); // Convertir a número
+
+        get(ref(db, "users/defaultUser/codigo"))
+          .then((snapshot) => {
+            const storedCode = snapshot.val();
+            console.log("Código almacenado:", storedCode, "Código ingresado:", code);
+
+            if (snapshot.exists() && storedCode === code) { // Comparación como número
+              set(ref(db, "modoSeguro"), "off")
+                .then(() => {
+                  registrarHistorial("Desactivó el modo seguro");
+                  alert("Modo seguro desactivado");
+                })
+                .catch((error) => console.error("Error al desactivar modo seguro:", error));
+
+              set(ref(db, "alarma/alarmaActiva"), "false")
+                .catch((error) => console.error("Error al desactivar alarma:", error));
+              
+              bootstrap.Modal.getInstance(document.getElementById("securityCodeModal")).hide();
+            } else {
+              alert("Código incorrecto");
+            }
+          })
+          .catch((error) => {
+            console.error("Error al verificar el código:", error);
+          });
+      });
+
+    
+      // Registro de Historial
+      function registrarHistorial(accion) {
+        const user = auth.currentUser;
+        if (!user) {
+          console.error("No hay usuario autenticado para registrar historial");
+          return;
+        }
+
+        const nuevoHistorial = {
+          accion: accion,
+          usuario: user.email || "Usuario desconocido",
+          timestamp: new Date().toLocaleString("es-ES", { timeZone: "UTC" })
+        };
+
+        console.log("Registrando en historial:", nuevoHistorial);
+
+        push(ref(db, "historial"), nuevoHistorial)
+          .then(() => console.log("Historial registrado exitosamente"))
+          .catch((error) => console.error("Error al registrar historial:", error));
+      }
+    
+      // Actualizar estado de luces
+      const updateLightStatus = (area, status) => {
+        const areaRef = ref(db, `luces/${area}`);
+        set(areaRef, status)
+          .then(() => registrarHistorial(`${status === "on" ? "Encendió" : "Apagó"} la luz de ${area}`))
+          .catch((error) => console.error(`Error al actualizar la luz de ${area}:`, error));
+      };
+    
+      // Control de luces
+      document.querySelectorAll(".btn-green").forEach((button) => {
+        button.addEventListener("click", () => {
+          const area = button.getAttribute("data-area");
+          const status = "on";
+          set(ref(db, `luces/${area}`), status)
+            .then(() => registrarHistorial(`Encendió luz en ${area}`))
+            .catch((error) => console.error(`Error al encender luz en ${area}:`, error));
+        });
+      });
+
+      document.querySelectorAll(".btn-red").forEach((button) => {
+        button.addEventListener("click", () => {
+          const area = button.getAttribute("data-area");
+          const status = "off";
+          set(ref(db, `luces/${area}`), status)
+            .then(() => registrarHistorial(`Apagó luz en ${area}`))
+            .catch((error) => console.error(`Error al apagar luz en ${area}:`, error));
+        });
+      });
+    
+      // Control del garage
+      document.getElementById("btn-abrir").addEventListener("click", () => {
+        set(ref(db, "garage/status"), "opening")
+          .then(() => registrarHistorial("Abrió el garage"))
+          .catch((error) => console.error("Error al abrir el garage:", error));
+      });
+
+      document.getElementById("btn-cerrar").addEventListener("click", () => {
+        set(ref(db, "garage/status"), "closing")
+          .then(() => registrarHistorial("Cerró el garage"))
+          .catch((error) => console.error("Error al cerrar el garage:", error));
+      });
+    
+      // Modo seguro
+      document.getElementById("btn-activar-seguro").addEventListener("click", () => {
+        set(ref(db, "modoSeguro"), "on")
+          .then(() => registrarHistorial("Activó el modo seguro"))
+          .catch((error) => console.error("Error al activar modo seguro:", error));
+      });
+
+      document.getElementById("btn-desactivar-seguro").addEventListener("click", () => {
+        const securityModal = new bootstrap.Modal(document.getElementById("securityCodeModal"));
+        securityModal.show();
+      });
+
+      // Historial en tiempo real
+      onValue(ref(db, "historial"), (snapshot) => {
+        console.log("Historial cargado:", snapshot.val());
+        const list = document.getElementById("historial-list");
+        list.innerHTML = ""; // Limpia la tabla antes de cargar
+
+        if (!snapshot.exists()) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="3" class="text-center">No hay registros en el historial.</td>`;
+          list.appendChild(row);
+          return;
+        }
+
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data?.accion && data?.timestamp && data?.usuario) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${data.timestamp}</td>
+              <td>${data.accion}</td>
+              <td>${data.usuario}</td>
+            `;
+            list.appendChild(row);
+          } else {
+            console.warn("Datos incompletos en el historial:", data);
+          }
+        });
+      }, (error) => {
+        console.error("Error al leer el historial:", error);
+      });
+
+
+
+    </script>
+        
+  </body>
+</html>
